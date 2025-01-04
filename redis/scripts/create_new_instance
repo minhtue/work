@@ -1,0 +1,30 @@
+#!/bin/sh
+
+root_dir="/home/builds/redis"
+redis_port="$1"
+if [[ "$#" -eq "1" ]]; then
+  continue
+else
+  echo "Usage: ./$0 <redis_port>"
+  exit 0
+fi
+
+mkdir -p $root_dir/$redis_port/{tmp,log,data}
+cd $root_dir
+cp scripts/redis_template.conf $redis_port/redis_$redis_port.conf
+sed -i s/redis_port/$redis_port/g $redis_port/redis_$redis_port.conf
+
+cp scripts/redis_init_template /etc/init.d/redis_$redis_port
+sed -i s/redis_port/$redis_port/g /etc/init.d/redis_$redis_port
+chmod +x /etc/init.d/redis_$redis_port
+echo "/usr/bin/redis-server $root_dir/$redis_port/redis_$redis_port.conf" >> scripts/start_all_redis.sh
+
+echo "DONE"
+echo "INIT_SCRIPT: /etc/init.d/redis_$redis_port"
+
+## WARNING overcommit_memory is set to 0! Background save may fail under low memory condition.
+#sysctl vm.overcommit_memory=1
+## WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis.
+#echo never > /sys/kernel/mm/transparent_hugepage/enabled
+
+#/bin/sh /etc/init.d/redis_$redis_port restart
