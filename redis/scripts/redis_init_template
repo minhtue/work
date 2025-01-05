@@ -3,8 +3,8 @@
 
 EXEC=/usr/bin/redis-server
 CLIEXEC=/usr/bin/redis-cli
-PIDFILE=/home/builds/redis/redis_port/tmp/redis_redis_port.pid
-CONF="/home/builds/redis/redis_port/redis_redis_port.conf"
+PIDFILE=/home/builds/work/redis/redis_port/tmp/redis_redis_port.pid
+CONF="/home/builds/work/redis/redis_port/redis_redis_port.conf"
 REDISPORT="redis_port"
 ###############
 # SysV Init Information

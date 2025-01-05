@@ -1,0 +1,117 @@
+#AZChore Server Install
+
+dnf upgrade --refresh
+
+
+dnf install epel-release
+
+yum -y group install "Development Tools"
+
+#nginx, certbot
+dnf -y install httpd
+dnf -y install mod_ssl
+
+dnf -y install nginx
+
+dnf install certbot python3-certbot-nginx
+
+
+#Importing EPEL for Rocky Linux 9
+dnf config-manager --set-enabled crb
+
+dnf install \
+    https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm \
+    https://dl.fedoraproject.org/pub/epel/epel-next-release-latest-9.noarch.rpm
+#Image magick
+dnf install ImageMagick
+
+#Install java
+#Download right version
+https://www.oracle.com/technetwork/java/javase/downloads/index.html
+
+
+yum localinstall path_to_downloaded_jdk
+
+#Mysql
+yum -y install mariadb-server
+systemctl start mariadb
+mysql_secure_installation
+
+root: AZc!@3Monkey@@King
+
+be_azchore: AZb3@!Monkey@@King
+
+mysql -u root -p
+
+   CREATE USER 'be_azchore'@'localhost' IDENTIFIED BY 'AZb3@!Monkey@@King';
+
+   CREATE USER 'be_azchore'@'%' IDENTIFIED BY 'AZb3@!Monkey@@King';
+
+   GRANT ALL PRIVILEGES ON *.* TO 'be_azchore'@'localhost' WITH GRANT OPTION;
+
+   GRANT ALL PRIVILEGES ON *.* TO 'be_azchore'@'%' WITH GRANT OPTION;
+
+   FLUSH PRIVILEGES;
+
+quit
+#End Mysql
+
+
+#Redis
+
+dnf install https://rpms.remirepo.net/enterprise/remi-release-9.rpm
+
+dnf module list redis
+
+dnf module enable -y redis:remi-7.0
+
+dnf install redis
+
+mkdir /home/builds
+
+cd /home/builds
+
+git clone https://github.com/minhtue/work.git
+
+work/redis/scripts/create-new-instance 6380
+
+work/redis/scripts/start_all_redis.sh
+
+#End Redis
+
+# Tinode
+
+
+
+dnf install gnome-terminal
+
+dnf -y install dnf-plugins-core
+
+dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+
+dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+systemctl enable --now docker
+
+yum install go
+
+
+#AZChore
+
+mkdir -p /home/servers/azchores/
+
+cd /home/servers/azchores/
+
+mkdir admin  auth  core-api  frontent  static  tinode
+
+#for admin, auth, core-api
+mkdir conf  lib  logs  pid
+
+# Sync admin, auth, core-api for deploy
+
+
+# Config nginx for admin, api, auth, chat, web
+# Install ssl for ...
+
+
+
