@@ -56,6 +56,8 @@ mysql -u root -p
 quit
 #End Mysql
 
+# Install Initscripts
+dnf install initscripts
 
 #Redis
 
@@ -73,14 +75,11 @@ cd /home/builds
 
 git clone https://github.com/minhtue/work.git
 
-work/redis/scripts/create-new-instance 6380
+./work/redis/scripts/create-new-instance 6380
 
-work/redis/scripts/start_all_redis.sh
+./work/redis/scripts/start_all_redis.sh
 
 #End Redis
-
-# Tinode
-
 
 
 dnf install gnome-terminal
@@ -94,6 +93,9 @@ dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-co
 systemctl enable --now docker
 
 yum install go
+
+yum install screen
+
 
 
 #AZChore
@@ -112,6 +114,33 @@ mkdir conf  lib  logs  pid
 
 # Config nginx for admin, api, auth, chat, web
 # Install ssl for ...
+
+
+
+
+# Tinode
+cd /home/builds
+git clone https://github.com/minhtue/chat
+cd chat
+# -> for update chat: git pull
+
+yes | cp releases/tinode-mysql.linux-amd64.tar.gz /home/servers/azchores/tinode
+
+cd /home/servers/azchores/tinode
+
+tar -xvzf tinode-mysql.linux-amd64.tar.gz
+
+mkdir logs
+
+# Copy config
+yes | cp ../auth/conf/tinode.conf .
+
+./init-db
+
+# Start tinode
+# Note: Auth must be start before start tinode
+
+nohup ./tinode -config=/home/servers/azchores/tinode/tinode.conf -static_data=/home/servers/azchores/tinode/webapp/  > /home/servers/azchores/tinode/logs/tinode.log 2>&1 &
 
 
 
