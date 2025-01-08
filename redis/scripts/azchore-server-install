@@ -81,6 +81,30 @@ git clone https://github.com/minhtue/work.git
 
 #End Redis
 
+#start-stop-daemon
+tar -xvf apps-sys-utils-start-stop-daemon-IR1_9_18-2.tar.gz
+cd apps/sys-utils/start-stop-daemon-IR1_9_18-2/
+vi Makefile
+ comment this Two line for centos build. 
+#AXIS_USABLE_LIBS = GLIBC UCLIBC 
+#include $(AXIS_TOP_DIR)/tools/build/Rules.axis
+
+PROG = start-stop-daemon
+
+all: $(PROG)
+
+install: all
+        $(INSTALL) -m 0755 -o root -g root $(PROG) $(prefix)/sbin
+
+clean:
+        rm -f $(PROG)
+-----------------------------------------------
+
+-bash-3.2# make
+cc     start-stop-daemon.c   -o start-stop-daemon
+cp start-stop-daemon /usr/bin/
+
+
 
 dnf install gnome-terminal
 
@@ -115,7 +139,9 @@ mkdir conf  lib  logs  pid
 # Config nginx for admin, api, auth, chat, web
 # Install ssl for ...
 
+....
 
+certbot --key-type rsa -d staging-chat.azchore.ca
 
 
 # Tinode
@@ -130,10 +156,17 @@ cd /home/servers/azchores/tinode
 
 tar -xvzf tinode-mysql.linux-amd64.tar.gz
 
-mkdir logs
+mkdir logs static
 
 # Copy config
 yes | cp ../auth/conf/tinode.conf .
+
+# change config db, ssl ...
+
+# copy firebase service account -> azchore-sa.json
+
+# ICE config
+
 
 ./init-db
 
